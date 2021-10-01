@@ -1,40 +1,25 @@
-var express = require("express");
-var venom = require('venom-bot');
+// Supports ES6
+// import { create, Whatsapp } from 'venom-bot';
+const venom = require('venom-bot');
 
-venom.create().then((client) => start(client));
+venom
+  .create()
+  .then((client) => start(client))
+  .catch((erro) => {
+    console.log(erro);
+  });
 
 function start(client) {
-
-  var app = express();
-
-  app.listen(3333, () =>{
-    console.log("Server running on port 3333")
+  client.onMessage((message) => {
+    if (message.body === 'Hi' && message.isGroupMsg === false) {
+      client
+        .sendText(message.from, 'Welcome Venom 🕷')
+        .then((result) => {
+          console.log('Result: ', result); //return object success
+        })
+        .catch((erro) => {
+          console.error('Error when sending: ', erro); //return object error
+        });
+    }
   });
-
-  app.get("/message", async (req, res, next) => {
-
-    //await client.sendMessageToId(req.query.number + '@c.us', req.query.message);
-
-    await client
-    .sendText(req.query.number + '@c.us', req.query.message)
-    .then((result) => {
-      console.log('Result: ', result); //return object success
-    })
-    .catch((erro) => {
-      console.error('Error when sending: ', erro); //return object error
-    });
-    res.json(req.query);
-
-  });
-
- client.onMessage((message) =>{
-  
-  if(message.body === 'Hi') {
-
-    client.senText(message.from, 'Welcome Venom');
-
-  }
-
- });
-
 }
