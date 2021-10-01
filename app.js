@@ -1,25 +1,14 @@
-// Supports ES6
-// import { create, Whatsapp } from 'venom-bot';
-const venom = require('venom-bot');
+const http = require('http');
 
-venom
-  .create()
-  .then((client) => start(client))
-  .catch((erro) => {
-    console.log(erro);
-  });
+const hostname = '127.0.0.1';
+const port = 3000;
 
-function start(client) {
-  client.onMessage((message) => {
-    if (message.body === 'Hi' && message.isGroupMsg === false) {
-      client
-        .sendText(message.from, 'Welcome Venom 🕷')
-        .then((result) => {
-          console.log('Result: ', result); //return object success
-        })
-        .catch((erro) => {
-          console.error('Error when sending: ', erro); //return object error
-        });
-    }
-  });
-}
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
