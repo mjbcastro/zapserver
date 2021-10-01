@@ -1,15 +1,11 @@
-var express = require("express");
-var venom = require('venom-bot');
+const express = require("express");
+const venom = require('venom-bot');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 venom.create().then((client) => start(client));
 
-function start(client) {
-
-  var app = express();
-
-  app.listen(3333, () =>{
-    console.log("Server running on port 3333")
-  });
+function start(client) { 
 
   app.get("/message", async (req, res, next) => {
 
@@ -38,3 +34,5 @@ function start(client) {
  });
 
 }
+app.get ('/', (req, res) => res.send ('Hello World'));
+app.listen (PORT, () => console.log (`Servidor ouvindo na porta 3000`));
